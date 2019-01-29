@@ -19,8 +19,9 @@ class Todo(db.Model):
 def index():
     # incomplete = todos = Todo.query.filter_by(complete=False).all()
     # complete = Todo.query.filter_by(complete=True).all()
-    todos = Todo.query.all()
+    # todos = Todo.query.all()
     # return render_template('index.html', todos=todos, incomplete=incomplete, complete=complete)
+    todos = Todo.query.filter_by(complete=False).all()
     return render_template('index.html', todos=todos)
 
 
@@ -36,8 +37,12 @@ def add():
 @app.route('/update', methods=['GET', 'POST'])
 def update():
     if request.method == "POST":
-        selected = request.form.getlist("itemTest")
+        selected = request.form.get("itemTest")
         print(selected)
+        todo = Todo.query.filter_by(id=int(selected)).first()  # because expecting only 1 itemsho
+        todo.complete = True
+        db.session.commit()
+
     return redirect(url_for('index'))
 
 

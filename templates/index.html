@@ -9,14 +9,14 @@
         <form method="POST" action="/update">
             {% for todo in todos %}
             <div class="checkbox">
-                <label><input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.text}}">{{ todo.text }}</label></br>
+                <!-- <label><input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.text}}">{{ todo.text }}</label></br> -->
+                <label><input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.id}}">{{ todo.text }}</label></br>
             </div>
             {% endfor %}
             <input type="submit" value="Update">
             <input type="submit" value = "Remove" formaction="/remove">
         </form>
         <div class="completed">
-
             <h1>Completed Tasks</h1>
         </div>
     </body>
