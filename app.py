@@ -1,8 +1,11 @@
 #  To Be Completed
 # [ ] Update Multiple
 # [x] Display Completed under completed
-# [ ] Remove
-# C-R-U-[D]
+# [x] Remove
+# [ ] Track Date ?
+# [ ] Track Time Completed
+#
+# C-R-U-D
 
 import os
 from flask import Flask, render_template, request, redirect, url_for
@@ -41,15 +44,23 @@ def add():
     # return '<h1>{}</h1>'.format(request.form['todoitem']) # now we know it was received
 
 
-@app.route('/update', methods=['GET', 'POST'])
+@app.route('/update', methods=['POST'])
 def update():
     if request.method == "POST":
         selected = request.form.get("itemTest")
-        print(selected)
+        # print(selected)
         todo = Todo.query.filter_by(id=int(selected)).first()  # because expecting only 1 itemsho
         todo.complete = True
         db.session.commit()
+    return redirect(url_for('index'))
 
+
+@app.route('/remove', methods=['POST'])
+def remove():
+    selected = request.form.get("itemTest")
+    todo = Todo.query.filter_by(id=int(selected)).first()
+    db.session.delete(todo)
+    db.session.commit()
     return redirect(url_for('index'))
 
 
