@@ -1,3 +1,9 @@
+#  To Be Completed
+# [ ] Update Multiple
+# [x] Display Completed under completed
+# [ ] Remove
+# C-R-U-[D]
+
 import os
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -21,8 +27,9 @@ def index():
     # complete = Todo.query.filter_by(complete=True).all()
     # todos = Todo.query.all()
     # return render_template('index.html', todos=todos, incomplete=incomplete, complete=complete)
-    todos = Todo.query.filter_by(complete=False).all()
-    return render_template('index.html', todos=todos)
+    incomplete = Todo.query.filter_by(complete=False).all()
+    complete = Todo.query.filter_by(complete=True).all()
+    return render_template('index.html', incomplete=incomplete, complete=complete)
 
 
 @app.route('/add', methods=['POST'])
