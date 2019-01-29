@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 proj_dir = os.path.dirname(os.path.abspath(__file__))
-print(proj_dir)
 db_file = "sqlite:////{}".format(os.path.join(proj_dir, "todo.db"))
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = db_file
@@ -18,7 +17,8 @@ class Todo(db.Model):
 
 @app.route('/')
 def index():
- 
+    # incomplete = todos = Todo.query.filter_by(complete=False).all()
+    # complete = Todo.query.filter_by(complete=True).all()
     todos = Todo.query.all()
     # return render_template('index.html', todos=todos, incomplete=incomplete, complete=complete)
     return render_template('index.html', todos=todos)
@@ -31,6 +31,14 @@ def add():
     db.session.commit()
     return redirect(url_for('index'))
     # return '<h1>{}</h1>'.format(request.form['todoitem']) # now we know it was received
+
+
+@app.route('/update', methods=['GET', 'POST'])
+def update():
+    if request.method == "POST":
+        selected = request.form.getlist("itemTest")
+        print(selected)
+    return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
