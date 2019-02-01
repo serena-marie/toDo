@@ -1,15 +1,24 @@
 <html>
     <body>
+
+   <!-- <div class = "user">
+        <form method ="POST" action="/newUser">
+            <h3> Add a new user: </h3>
+            Name:<input type="text" name="users_name">
+            <input type="submit" value="Add New User">
+        </form>
+    </div> -->
+    <div class = "addButton">
+        <h3> Add a new task: </h3>
         <form method="POST" action="/add">
             <input type="text" name="todoitem">
             <input type="submit" value="add">
         </form>
-
-    <h1>Today's List</h1>
-        <form method="POST" action="/update">
+    </div>
+       <form method="POST" action="/update">
+           <h1>Incomplete Tasks</h1>
             {% for todo in incomplete %}
             <div class="checkbox">
-                <!-- <label><input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.text}}">{{ todo.text }}</label></br> -->
                 <label><input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.id}}">{{ todo.text }}</label></br>
             </div>
             {% endfor %}
