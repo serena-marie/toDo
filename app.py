@@ -51,7 +51,7 @@ def index():
         db.session.add(adduser)
         db.session.commit()
 
-    # Display
+    # Displayf
     incomplete = Todo.query.filter_by(complete=False).all()
     complete = Todo.query.filter_by(complete=True).all()
     usr = User.query.order_by(User.id).all()
