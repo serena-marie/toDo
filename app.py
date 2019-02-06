@@ -4,8 +4,9 @@
 # [x] Remove
 # [ ] Track Date ?
 # [ ] Track Time Completed
-# [ ] one-to-many relationship
-# [ ] Allow for multiple users
+# [x] one-to-many relationship
+#   [ ] update routes to correctly do the dang thing
+# [x] Allow for multiple users
 # C(reate)-R(ead)-U(pdate)-D(elete)
 
 
@@ -24,40 +25,56 @@ app.config['SQLALCHEMY_DATABASE_URI'] = db_file
 db = SQLAlchemy(app)
 
 
-# tables
+# Models
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
-    tasks = db.relationship('Todo', backref='user')
+    todos = db.relationship('Todo', backref='user', lazy=True)
 
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(200))
     complete = db.Column(db.Boolean)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
 # routes
 @app.route('/')
 def index():
-    if User.query.filter_by(name="Guest") is None:
-        usr = User(id=1, name="Guest") # For now, need to make dynamic
-        db.session.add(usr)
+    # Adding Guest user if not already in table
+    if User.query.filter_by(name="Guest").first() is None:
+        # args = { id=1, name="Guest"}
+        guest_info = {'id': 1, 'name': 'Guest'}
+        # adduser = User.create(**guest_info)
+        adduser = User(**guest_info)
+        db.session.add(adduser)
         db.session.commit()
+
+    # Display
     incomplete = Todo.query.filter_by(complete=False).all()
     complete = Todo.query.filter_by(complete=True).all()
-    return render_template('index.html', incomplete=incomplete, complete=complete)
+    usr = User.query.order_by(User.id).all()
+    return render_template('index.html', incomplete=incomplete, complete=complete, usr=usr)
 
 
 @app.route('/add', methods=['POST'])
 def add():
-    todo = Todo(text=request.form['todoitem'], complete=False)
+    # The way this is set up - need to explicitly update user_id
+    todo = Todo(text=request.form['todoitem'], complete=False, user_id=request.form['user'])
     db.session.add(todo)
     db.session.commit()
     return redirect(url_for('index'))
 #     # return '<h1>{}</h1>'.format(request.form['todoitem']) # now we know it was received
 
+
+@app.route('/new', methods=['POST'])
+def new_member():
+    # return '<h1>{}</h1>'.format(request.form['newname'])
+    newUser = User(name=request.form['newname'])
+    db.session.add(newUser)
+    db.session.commit()
+    return redirect(url_for('index'))
 
 # @app.route('/update', methods=['POST'])
 # def update():
