@@ -25,7 +25,7 @@
 
     {% for todo in incomplete %}
      <div class="checkbox">
-          <label> User: {{user_display}} <input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.id}}">{{ todo.text }}</label></br>
+          <label> User:  <input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.id}}">{{ todo.text }}</label></br>
       </div>
     {% endfor %}
     <!-- {% for todo, user in zip_data %}

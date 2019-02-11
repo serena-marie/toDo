@@ -34,7 +34,6 @@ class Todo(db.Model):
     text = db.Column(db.String(200))
     complete = db.Column(db.Boolean)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
 # routes
@@ -42,23 +41,16 @@ class Todo(db.Model):
 def index():
     # Adding Guest user if not already in table
     if User.query.filter_by(name="Guest").first() is None:
-        # args = { id=1, name="Guest"}
         guest_info = {'id': 1, 'name': 'Guest'}
-        # adduser = User.create(**guest_info)
         adduser = User(**guest_info)
         db.session.add(adduser)
         db.session.commit()
 
     # Display
-    incomplete = Todo.query.filter_by(complete=False).order_by(Todo.user_id).all()
-    complete = Todo.query.filter_by(complete=True).order_by(Todo.user_id).all()
-    # usr = User.query.order_by(User.id).first()
-    # usr = Todo.query.with_parent(Todo.user_id);
-    # user_display = User.query.filter_by(id=Todo.user_id).all()
-    # user_display = User.query.order_by(Todo.user_id).all()
-    # zip_data = zip(incomplete, user_display)
-    # return render_template('index.html', incomplete=incomplete, complete=complete, user_display=user_display, zip_data=zip_data)
-    return render_template('index.html', incomplete=incomplete, complete=complete)
+    incomplete = Todo.query.filter_by(complete=False).all()
+    complete = Todo.query.filter_by(complete=True).all()
+    usr = User.query.order_by(User.id).all()
+    return render_template('index.html', incomplete=incomplete, complete=complete, usr=usr)
 
 
 @app.route('/add', methods=['POST'])
