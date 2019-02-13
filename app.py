@@ -79,7 +79,7 @@ def new_member():
 def update():
     if request.method == "POST":
         selected = request.form.get("itemTest")
-        todo = Todo.query.filter_by(id=int(selected)).first()  # because expecting only 1 itemsho
+        todo = Todo.query.filter_by(id=int(selected)).first()  # because expecting only 1 item
         todo.complete = True
         db.session.commit()
     return redirect(url_for('index'))
