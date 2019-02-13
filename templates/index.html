@@ -1,22 +1,43 @@
 <html>
-    <body>
-        <form method="POST" action="/add">
-            <input type="text" name="todoitem">
-            <input type="submit" value="add">
-        </form>
-
-    <h1>Today's List</h1>
-        <form method="POST" action="/update">
-            {% for todo in todos %}
-            <div class="checkbox">
-                <label><input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.text}}">{{ todo.text }}</label></br>
-            </div>
+<body>
+<div class = "addButton">
+    <form method="POST" action="/add">
+        <b>Select a user:</b>
+        <select name="username">
+            {% for user in usr %}
+              <option value="{{user.id}}" name="{{user.name}}">{{user.name}}</option>
             {% endfor %}
-            <input type="submit" value="Update">
-            <input type="submit" value = "Remove" formaction="/remove">
-        </form>
-        <div class="completed">
-            <h1>Completed Tasks</h1>
-        </div>
-    </body>
+        </select>
+        <b>Add a new task:</b>
+        <input type="text" name="todoitem">
+        <input type="submit" value="add">
+    </form>
+
+    <form method="POST" action="/new">
+       <h3>OR:</h3>
+        <b>Add a new user: </b>
+        <input type="text" name="newname">
+        <input type="submit" value="New User">
+    </form>
+</div>
+<form method="POST" action="/update">
+    <h1>Incomplete Tasks</h1>
+
+    {% for todo in incomplete %}
+     <div class="checkbox">
+          <label> User:  <input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.id}}">{{ todo.text }}</label></br>
+      </div>
+    {% endfor %}
+    <input type="submit" value="Update">
+    <input type="submit" value = "Remove" formaction="/remove">
+</form>
+<div class="completed">
+    <h1>Completed Tasks</h1>
+    <ul>
+        {% for todo in complete %}
+          <li>{{ todo.text }}</li>
+        {% endfor %}
+    </ul>
+</div>
+</body>
 </html>
