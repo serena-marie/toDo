@@ -3,9 +3,9 @@
 <div class = "addButton">
     <form method="POST" action="/add">
         <b>Select a user:</b>
-        <select>
+        <select name="username">
             {% for user in usr %}
-              <option value="{{user.id}}" name="{{user.name}}">{{user.name}} </option>
+              <option value="{{user.id}}" name="{{user.name}}">{{user.name}}</option>
             {% endfor %}
         </select>
         <b>Add a new task:</b>
@@ -22,10 +22,10 @@
 </div>
 <form method="POST" action="/update">
     <h1>Incomplete Tasks</h1>
-    {% for todo in incomplete %}
 
-      <div class="checkbox">
-          <label><input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.id}}">{{ todo.text }}</label></br>
+    {% for todo in incomplete %}
+     <div class="checkbox">
+          <label> User:  <input type="checkbox" id="{{todo.id}}" name="itemTest" value="{{todo.id}}">{{ todo.text }}</label></br>
       </div>
     {% endfor %}
     <input type="submit" value="Update">

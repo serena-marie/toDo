@@ -1,16 +1,14 @@
 #  To Be Completed
-# [ ] Update Multiple
+
 # [x] Display Completed under completed
 # [x] Remove
-# [ ] Track Date ?
-# [ ] Track Time Completed
 # [x] one-to-many relationship
-#   [ ] update routes to correctly do the dang thing
+#   [x] update routes to correctly do the dang thing
 # [x] Allow for multiple users
 # C(reate)-R(ead)-U(pdate)-D(elete)
-
-
-# As of 2-1: still working towards 1:Many, FK not updating
+# [ ] Track Date ?
+# [ ] Track Time Completed
+# [ ] Update Multiple
 
 import os
 from flask import Flask, render_template, request, redirect, url_for
@@ -49,8 +47,7 @@ def index():
         db.session.add(adduser)
         db.session.commit()
 
-
-    # Displayf
+    # Display
     incomplete = Todo.query.filter_by(complete=False).all()
     complete = Todo.query.filter_by(complete=True).all()
     usr = User.query.order_by(User.id).all()
@@ -59,8 +56,11 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def add():
+    # return '<h1>{}</h1>'.format(request.form['username'])
     # The way this is set up - need to explicitly update user_id
-    todo = Todo(text=request.form['todoitem'], complete=False, user_id=request.form['user'])
+    # todo = Todo(text=request.form['todoitem'], complete=False, user_id=request.form['user.name'])
+    todo = Todo(text=request.form['todoitem'], complete=False, user_id=request.form['username'])
+
     db.session.add(todo)
     db.session.commit()
     return redirect(url_for('index'))
@@ -93,24 +93,6 @@ def remove():
     db.session.delete(todo)
     db.session.commit()
     return redirect(url_for('index'))
-
-# @app.route('/update', methods=['POST'])
-# def update():
-#     if request.method == "POST":
-#         selected = request.form.get("itemTest")
-#         todo = Todo.query.filter_by(id=int(selected)).first()  # because expecting only 1 itemsho
-#         todo.complete = True
-#         db.session.commit()
-#     return redirect(url_for('index'))
-#
-#
-# @app.route('/remove', methods=['POST'])
-# def remove():
-#     selected = request.form.get("itemTest")
-#     todo = Todo.query.filter_by(id=int(selected)).first()
-#     db.session.delete(todo)
-#     db.session.commit()
-#     return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
