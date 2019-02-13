@@ -9,6 +9,9 @@
 # [x] Allow for multiple users
 # C(reate)-R(ead)-U(pdate)-D(elete)
 
+
+# As of 2-1: still working towards 1:Many, FK not updating
+
 import os
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -46,7 +49,8 @@ def index():
         db.session.add(adduser)
         db.session.commit()
 
-    # Display
+
+    # Displayf
     incomplete = Todo.query.filter_by(complete=False).all()
     complete = Todo.query.filter_by(complete=True).all()
     usr = User.query.order_by(User.id).all()
@@ -55,11 +59,8 @@ def index():
 
 @app.route('/add', methods=['POST'])
 def add():
-    # return '<h1>{}</h1>'.format(request.form['username'])
     # The way this is set up - need to explicitly update user_id
-    # todo = Todo(text=request.form['todoitem'], complete=False, user_id=request.form['user.name'])
-    todo = Todo(text=request.form['todoitem'], complete=False, user_id=request.form['username'])
-
+    todo = Todo(text=request.form['todoitem'], complete=False, user_id=request.form['user'])
     db.session.add(todo)
     db.session.commit()
     return redirect(url_for('index'))
@@ -74,6 +75,7 @@ def new_member():
     db.session.commit()
     return redirect(url_for('index'))
 
+<<<<<<< HEAD
 
 @app.route('/update', methods=['POST'])
 def update():
@@ -92,6 +94,25 @@ def remove():
     db.session.delete(todo)
     db.session.commit()
     return redirect(url_for('index'))
+
+# @app.route('/update', methods=['POST'])
+# def update():
+#     if request.method == "POST":
+#         selected = request.form.get("itemTest")
+#         todo = Todo.query.filter_by(id=int(selected)).first()  # because expecting only 1 itemsho
+#         todo.complete = True
+#         db.session.commit()
+#     return redirect(url_for('index'))
+#
+#
+# @app.route('/remove', methods=['POST'])
+# def remove():
+#     selected = request.form.get("itemTest")
+#     todo = Todo.query.filter_by(id=int(selected)).first()
+#     db.session.delete(todo)
+#     db.session.commit()
+#     return redirect(url_for('index'))
+
 
 
 if __name__ == '__main__':
